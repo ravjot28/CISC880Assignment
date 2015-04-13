@@ -2,8 +2,11 @@ public class Algorithm {
 
 	private int INFINITY = 9999999;
 
+	private int subsumingHeight = 3;
+	private int subsumingCPD = 2;
+
 	public boolean isSubsumedMethod(Method m) {
-		return true;
+		return m.getMaxHeight() >= subsumingHeight && m.getMinCPD() >= subsumingCPD;
 	}
 
 	public void calculateInducedCost(Node n) {
