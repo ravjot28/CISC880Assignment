@@ -5,11 +5,12 @@ public class Algorithm {
 
 	private int INFINITY = 9999999;
 
-	private int subsumingHeight = 0;
-	private int subsumingCPD = 0;
+	private int subsumingHeight = 1;
+	private int subsumingCPD = 1;
 
 	public boolean isSubsumedMethod(Method m) {
-		return m.getMaxHeight() >= subsumingHeight && m.getMinCPD() >= subsumingCPD;
+		return m.getMaxHeight() >= subsumingHeight
+				&& m.getMinCPD() >= subsumingCPD;
 	}
 
 	public void calculateInducedCost(XMLNode n) {
@@ -24,7 +25,8 @@ public class Algorithm {
 				}
 			}
 
-			n.getMethod().setInduced(n.getMethod().getInduced() + n.getInduced());
+			n.getMethod().setInduced(
+					n.getMethod().getInduced() + n.getInduced());
 		}
 	}
 
@@ -52,8 +54,8 @@ public class Algorithm {
 			int dist = CPD(n.getMethod(), m);
 			if (dist < m.getMinCPD()) {
 				m.setMinCPD(dist);
-				n = n.getParent();
 			}
+			n = n.getParent();
 		}
 
 	}
@@ -85,6 +87,7 @@ public class Algorithm {
 	}
 
 	public void reduceRecursivePaths(XMLNode n) {
+		System.out.println(n.getClass1() + n.getMethodName());
 		n.setAdjustedParent(findAdjustedParent(n));
 		if (n.getAdjustedParent() != null) {
 			if (n.getAdjustedParent().getAdjustedChildren() == null) {
@@ -92,12 +95,15 @@ public class Algorithm {
 				n.getAdjustedParent().setAdjustedChildren(adjustedChildren);
 			}
 			n.getAdjustedParent().getAdjustedChildren().add(n);
+			System.out.println("Checking null children");
 			if (n.getChildren() != null) {
 				for (XMLNode temp : n.getChildren()) {
 					reduceRecursivePaths(temp);
 				}
 			}
+			return;
 		}
+		System.out.println("End");
 	}
 
 	public XMLNode findAdjustedParent(XMLNode current) {
