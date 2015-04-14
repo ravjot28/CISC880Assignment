@@ -2,16 +2,16 @@ import java.util.List;
 
 public class Method {
 
-	private List<Node> nodes;
+	private List<XMLNode> nodes;
 	private int maxHeight;
 	private int minCPD;
-	private int induced;
+	private long induced;
 
-	public List<Node> getNodes() {
+	public List<XMLNode> getNodes() {
 		return nodes;
 	}
 
-	public void setNodes(List<Node> nodes) {
+	public void setNodes(List<XMLNode> nodes) {
 		this.nodes = nodes;
 	}
 
@@ -31,11 +31,11 @@ public class Method {
 		this.minCPD = minCPD;
 	}
 
-	public int getInduced() {
+	public long getInduced() {
 		return induced;
 	}
 
-	public void setInduced(int induced) {
+	public void setInduced(long induced) {
 		this.induced = induced;
 	}
 

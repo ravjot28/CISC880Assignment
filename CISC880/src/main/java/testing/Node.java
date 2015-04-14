@@ -1,9 +1,10 @@
+package testing;
 import java.util.List;
 
 public class Node {
 
 	private Method method;
-	private int cost;
+	private long cost;
 	private Node parent;
 	private List<Node> children;
 	private Node adjustedParent;
@@ -19,11 +20,11 @@ public class Node {
 		this.method = method;
 	}
 
-	public int getCost() {
+	public long getCost() {
 		return cost;
 	}
 
-	public void setCost(int cost) {
+	public void setCost(long cost) {
 		this.cost = cost;
 	}
 

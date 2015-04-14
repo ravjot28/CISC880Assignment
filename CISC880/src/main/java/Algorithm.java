@@ -9,10 +9,10 @@ public class Algorithm {
 		return m.getMaxHeight() >= subsumingHeight && m.getMinCPD() >= subsumingCPD;
 	}
 
-	public void calculateInducedCost(Node n) {
-		n.setInduced(n.getCost());
+	public void calculateInducedCost(XMLNode n) {
+		n.setInduced(Long.parseLong(n.getCost()));
 
-		for (Node c : n.getChildren()) {
+		for (XMLNode c : n.getChildren()) {
 			calculateInducedCost(c);
 			if (isSubsumedMethod(c.getMethod())) {
 				n.setInduced(n.getInduced() + c.getInduced());
@@ -22,9 +22,9 @@ public class Algorithm {
 		n.getMethod().setInduced(n.getMethod().getInduced() + n.getInduced());
 	}
 
-	public void calculateHeight(Node v) {
+	public void calculateHeight(XMLNode v) {
 		v.setHeight(0);
-		for (Node c : v.getAdjustedChildren()) {
+		for (XMLNode c : v.getAdjustedChildren()) {
 			calculateHeight(c);
 			if (c.getHeight() + 1 > v.getHeight()) {
 				v.setHeight(c.getHeight() + 1);
@@ -38,7 +38,7 @@ public class Algorithm {
 
 	public void minCPD(Method m) {
 		m.setMinCPD(INFINITY);
-		Node n = m.getNodes().get(0);
+		XMLNode n = m.getNodes().get(0);
 		n = n.getAdjustedParent();
 
 		while (n != null) {
@@ -53,7 +53,7 @@ public class Algorithm {
 
 	public int CPD(Method p, Method m) {
 		int cpd = 0;
-		for (Node n : m.getNodes()) {
+		for (XMLNode n : m.getNodes()) {
 			int dist = distance(p, n);
 			if (dist > cpd) {
 				cpd = dist;
@@ -62,7 +62,7 @@ public class Algorithm {
 		return cpd;
 	}
 
-	public int distance(Method m, Node n) {
+	public int distance(Method m, XMLNode n) {
 		int dist = 0;
 		while (true) {
 			dist += 1;
@@ -77,18 +77,18 @@ public class Algorithm {
 		}
 	}
 
-	public void reduceRecursivePaths(Node n) {
+	public void reduceRecursivePaths(XMLNode n) {
 		n.setAdjustedParent(findAdjustedParent(n));
 		n.getAdjustedParent().getAdjustedChildren().add(n);
-		for (Node temp : n.getChildren()) {
+		for (XMLNode temp : n.getChildren()) {
 			reduceRecursivePaths(temp);
 		}
 	}
 
-	public Node findAdjustedParent(Node current) {
-		Node match1 = null;
-		Node match2 = null;
-		Node n = current.getParent();
+	public XMLNode findAdjustedParent(XMLNode current) {
+		XMLNode match1 = null;
+		XMLNode match2 = null;
+		XMLNode n = current.getParent();
 		while (n != null && match2 == null) {
 			if (n.getMethod() == current.getMethod()) {
 				if (match1 == null) {
@@ -103,8 +103,8 @@ public class Algorithm {
 		if (match1 == null || match2 == null) {
 			return current.getParent();
 		}
-		Node n1 = current.getParent();
-		Node n2 = match1.getAdjustedParent();
+		XMLNode n1 = current.getParent();
+		XMLNode n2 = match1.getAdjustedParent();
 
 		while (n1 != match1 && n2 != match2) {
 			if (n1.getMethod() != n2.getMethod()) {

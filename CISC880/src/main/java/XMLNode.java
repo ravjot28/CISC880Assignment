@@ -1,6 +1,5 @@
-
-
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -8,24 +7,24 @@ import javax.xml.bind.annotation.XmlElements;
 
 public class XMLNode {
 
-	private ArrayList<XMLNode> nodes;
+	private ArrayList<XMLNode> children;
 
 	private String leaf;
 
 	private String class1;
 	private String methodName;
-
 	private String methodSignature;
-
-	private String time;
-
+	private String cost;
 	private String count;
-
 	private String inherentTime;
-
 	private String lineNumber;
-
 	private String percent;
+	private XMLNode parent;
+	private Method method;
+	private XMLNode adjustedParent;
+	private List<XMLNode> adjustedChildren;
+	int height;
+	long induced;
 
 	@XmlAttribute
 	public String getLeaf() {
@@ -63,13 +62,13 @@ public class XMLNode {
 		this.methodSignature = methodSignature;
 	}
 
-	@XmlAttribute
-	public String getTime() {
-		return time;
+	@XmlAttribute(name = "time")
+	public String getCost() {
+		return cost;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setCost(String cost) {
+		this.cost = cost;
 	}
 
 	@XmlAttribute
@@ -109,16 +108,64 @@ public class XMLNode {
 	}
 
 	@XmlElements(value = { @XmlElement(name = "node") })
-	public ArrayList<XMLNode> getNodes() {
-		return nodes;
+	public ArrayList<XMLNode> getChildren() {
+		return children;
 	}
 
-	public void setNodes(ArrayList<XMLNode> nodes) {
-		this.nodes = nodes;
+	public void setChildren(ArrayList<XMLNode> children) {
+		this.children = children;
 	}
 
 	public String toString() {
 		return class1 + " " + methodName;
+	}
+
+	public XMLNode getParent() {
+		return parent;
+	}
+
+	public void setParent(XMLNode parent) {
+		this.parent = parent;
+	}
+
+	public Method getMethod() {
+		return method;
+	}
+
+	public void setMethod(Method method) {
+		this.method = method;
+	}
+
+	public XMLNode getAdjustedParent() {
+		return adjustedParent;
+	}
+
+	public void setAdjustedParent(XMLNode adjustedParent) {
+		this.adjustedParent = adjustedParent;
+	}
+
+	public List<XMLNode> getAdjustedChildren() {
+		return adjustedChildren;
+	}
+
+	public void setAdjustedChildren(List<XMLNode> adjustedChildren) {
+		this.adjustedChildren = adjustedChildren;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public long getInduced() {
+		return induced;
+	}
+
+	public void setInduced(long induced) {
+		this.induced = induced;
 	}
 
 }
