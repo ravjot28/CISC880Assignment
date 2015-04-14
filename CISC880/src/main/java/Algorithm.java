@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Algorithm {
 
 	private int INFINITY = 9999999;
 
-	private int subsumingHeight = 3;
-	private int subsumingCPD = 2;
+	private int subsumingHeight = 0;
+	private int subsumingCPD = 0;
 
 	public boolean isSubsumedMethod(Method m) {
 		return m.getMaxHeight() >= subsumingHeight && m.getMinCPD() >= subsumingCPD;
@@ -11,26 +14,30 @@ public class Algorithm {
 
 	public void calculateInducedCost(XMLNode n) {
 		n.setInduced(Long.parseLong(n.getCost()));
-
-		for (XMLNode c : n.getChildren()) {
-			calculateInducedCost(c);
-			if (isSubsumedMethod(c.getMethod())) {
-				n.setInduced(n.getInduced() + c.getInduced());
+		if (n.getChildren() != null) {
+			for (XMLNode c : n.getChildren()) {
+				calculateInducedCost(c);
+				if (isSubsumedMethod(c.getMethod())) {
+					n.setInduced(n.getInduced() + c.getInduced());
+					// System.out.println(n.getMethodName() +
+					// n.getMethodSignature() + " " + n.getInduced());
+				}
 			}
-		}
 
-		n.getMethod().setInduced(n.getMethod().getInduced() + n.getInduced());
+			n.getMethod().setInduced(n.getMethod().getInduced() + n.getInduced());
+		}
 	}
 
 	public void calculateHeight(XMLNode v) {
 		v.setHeight(0);
-		for (XMLNode c : v.getAdjustedChildren()) {
-			calculateHeight(c);
-			if (c.getHeight() + 1 > v.getHeight()) {
-				v.setHeight(c.getHeight() + 1);
+		if (v.getAdjustedChildren() != null) {
+			for (XMLNode c : v.getAdjustedChildren()) {
+				calculateHeight(c);
+				if (c.getHeight() + 1 > v.getHeight()) {
+					v.setHeight(c.getHeight() + 1);
+				}
 			}
 		}
-
 		if (v.getHeight() > v.getMethod().getMaxHeight()) {
 			v.getMethod().setMaxHeight(v.getHeight());
 		}
@@ -79,9 +86,17 @@ public class Algorithm {
 
 	public void reduceRecursivePaths(XMLNode n) {
 		n.setAdjustedParent(findAdjustedParent(n));
-		n.getAdjustedParent().getAdjustedChildren().add(n);
-		for (XMLNode temp : n.getChildren()) {
-			reduceRecursivePaths(temp);
+		if (n.getAdjustedParent() != null) {
+			if (n.getAdjustedParent().getAdjustedChildren() == null) {
+				List<XMLNode> adjustedChildren = new ArrayList<XMLNode>();
+				n.getAdjustedParent().setAdjustedChildren(adjustedChildren);
+			}
+			n.getAdjustedParent().getAdjustedChildren().add(n);
+			if (n.getChildren() != null) {
+				for (XMLNode temp : n.getChildren()) {
+					reduceRecursivePaths(temp);
+				}
+			}
 		}
 	}
 
