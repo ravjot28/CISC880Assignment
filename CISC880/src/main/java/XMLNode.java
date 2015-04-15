@@ -19,6 +19,7 @@ public class XMLNode {
 	private String inherentTime;
 	private String lineNumber;
 	private String percent;
+
 	private XMLNode parent;
 	private Method method;
 	private XMLNode adjustedParent;
